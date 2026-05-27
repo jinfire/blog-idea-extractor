@@ -14,7 +14,7 @@ NAVER_CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 NAVER_API_URL = "https://openapi.naver.com/v1/search/cafearticle.json"
 
 
-def search_cafe(keyword: str, total: int = 200) -> list[dict]:
+def search_cafe(keyword: str, total: int = 1000) -> list[dict]:
     """total개 가져오기 (display=100 씩 페이지네이션)"""
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
