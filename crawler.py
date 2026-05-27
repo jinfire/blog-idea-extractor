@@ -14,19 +14,30 @@ NAVER_CLIENT_SECRET = os.getenv("NAVER_CLIENT_SECRET")
 NAVER_API_URL = "https://openapi.naver.com/v1/search/cafearticle.json"
 
 
-def search_cafe(keyword: str, display: int = 100) -> list[dict]:
+def search_cafe(keyword: str, total: int = 200) -> list[dict]:
+    """total개 가져오기 (display=100 씩 페이지네이션)"""
     headers = {
         "X-Naver-Client-Id": NAVER_CLIENT_ID,
         "X-Naver-Client-Secret": NAVER_CLIENT_SECRET,
     }
-    params = {
-        "query": keyword,
-        "display": display,
-        "sort": "date",
-    }
-    resp = requests.get(NAVER_API_URL, headers=headers, params=params, timeout=10)
-    resp.raise_for_status()
-    return resp.json().get("items", [])
+    results = []
+    start = 1
+    while len(results) < total:
+        fetch = min(100, total - len(results))
+        params = {
+            "query": keyword,
+            "display": fetch,
+            "start": start,
+            "sort": "date",
+        }
+        resp = requests.get(NAVER_API_URL, headers=headers, params=params, timeout=10)
+        resp.raise_for_status()
+        items = resp.json().get("items", [])
+        if not items:
+            break
+        results.extend(items)
+        start += fetch
+    return results
 
 
 def clean_html(text: str) -> str:
