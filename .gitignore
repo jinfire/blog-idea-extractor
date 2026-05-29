@@ -1,5 +1,6 @@
 .env
-*.csv
 *.json
 __pycache__/
 *.pyc
+classified*.csv
+!results.csv
