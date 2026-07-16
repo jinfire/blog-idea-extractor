@@ -1,8 +1,6 @@
 name: Naver Cafe Crawler
 
 on:
-  schedule:
-    - cron: '0 22 * * *'  # 매일 오전 7시 KST (UTC 22:00)
   workflow_dispatch:
 
 jobs:
